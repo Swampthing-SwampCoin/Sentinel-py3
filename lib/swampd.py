@@ -231,7 +231,7 @@ class SwampDaemon:
             block = self.rpc_command('getblock', bhash)
             epoch = block['time']
         except JSONRPCException as e:
-            if str(e) == 'Block height out of range':
+            if 'Block height out of range' in str(e):
                 epoch = self.estimate_block_time(height)
             else:
                 print("error: %s" % e)
