@@ -12,7 +12,7 @@ This guide covers installing Sentinel onto an existing 1.1 Masternode in Ubuntu 
 
 ### 1. Install Prerequisites
 
-Make sure Python version 3.12.x or above is installed:
+Make sure Python version 3.11.x or above is installed:
 
     python3 --version
 
