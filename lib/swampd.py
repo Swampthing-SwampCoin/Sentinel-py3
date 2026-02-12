@@ -28,7 +28,7 @@ class SwampDaemon:
 
     @property
     def rpc_connection(self):
-        return AuthServiceProxy("http://{0}:{1}@{2}:{3}".format(*self.creds))
+        return AuthServiceProxy("http://{0}:{1}@{2}:{3}".format(*self.creds), timeout=120)
 
     @classmethod
     def from_swamp_conf(self, swamp_dot_conf):

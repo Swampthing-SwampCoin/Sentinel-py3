@@ -255,8 +255,8 @@ class GovernanceObject(BaseModel):
 class Setting(BaseModel):
     name = CharField(default='')
     value = CharField(default='')
-    created_at = DateTimeField(default=datetime.datetime.utcnow())
-    updated_at = DateTimeField(default=datetime.datetime.utcnow())
+    created_at = DateTimeField(default=datetime.datetime.now(datetime.timezone.utc))
+    updated_at = DateTimeField(default=datetime.datetime.now(datetime.timezone.utc))
 
     class Meta:
         table_name = 'settings'
@@ -570,8 +570,8 @@ def on_save_handler(model_class, instance, created):
 
 class Signal(BaseModel):
     name = CharField(unique=True)
-    created_at = DateTimeField(default=datetime.datetime.utcnow())
-    updated_at = DateTimeField(default=datetime.datetime.utcnow())
+    created_at = DateTimeField(default=datetime.datetime.now(datetime.timezone.utc))
+    updated_at = DateTimeField(default=datetime.datetime.now(datetime.timezone.utc))
 
     class Meta:
         table_name = 'signals'
@@ -579,8 +579,8 @@ class Signal(BaseModel):
 
 class Outcome(BaseModel):
     name = CharField(unique=True)
-    created_at = DateTimeField(default=datetime.datetime.utcnow())
-    updated_at = DateTimeField(default=datetime.datetime.utcnow())
+    created_at = DateTimeField(default=datetime.datetime.now(datetime.timezone.utc))
+    updated_at = DateTimeField(default=datetime.datetime.now(datetime.timezone.utc))
 
     class Meta:
         table_name = 'outcomes'
@@ -590,9 +590,9 @@ class Vote(BaseModel):
     governance_object = ForeignKeyField(GovernanceObject, backref='votes', on_delete='CASCADE', on_update='CASCADE')
     signal = ForeignKeyField(Signal, backref='signal_votes', on_delete='CASCADE', on_update='CASCADE')
     outcome = ForeignKeyField(Outcome, backref='outcome_votes', on_delete='CASCADE', on_update='CASCADE')
-    voted_at = DateTimeField(default=datetime.datetime.utcnow())
-    created_at = DateTimeField(default=datetime.datetime.utcnow())
-    updated_at = DateTimeField(default=datetime.datetime.utcnow())
+    voted_at = DateTimeField(default=datetime.datetime.now(datetime.timezone.utc))
+    created_at = DateTimeField(default=datetime.datetime.now(datetime.timezone.utc))
+    updated_at = DateTimeField(default=datetime.datetime.now(datetime.timezone.utc))
     object_hash = CharField(max_length=64)
 
     class Meta:

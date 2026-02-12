@@ -1,5 +1,5 @@
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 import re
 import sys
 import os
@@ -40,7 +40,7 @@ def now():
 
 
 def epoch2str(epoch):
-    return datetime.utcfromtimestamp(epoch).strftime("%Y-%m-%d %H:%M:%S")
+    return datetime.fromtimestamp(epoch, timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
 
 
 class Bunch:

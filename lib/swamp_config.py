@@ -30,8 +30,8 @@ class SwampConfig():
         # get rpc info from swamp.conf
         match = re.findall(r'rpc(user|password|port)=(.*?)$', data, re.MULTILINE)
 
-        # python >= 2.7
-        creds = {key: value for (key, value) in match}
+        # strip values to remove any trailing \r from Windows-style line endings
+        creds = {key: value.strip() for (key, value) in match}
 
         # standard Swamp defaults...
         default_port = 26920 if (network == 'mainnet') else 16920
@@ -52,7 +52,8 @@ class SwampConfig():
         try:
             data = self.slurp_config_file(filename)
             match = re.findall(r'(.*?)=(.*?)$', data, re.MULTILINE)
-            tokens = {key: value for (key, value) in match}
+            # strip values to remove any trailing \r from Windows-style line endings
+            tokens = {key.strip(): value.strip() for (key, value) in match}
         except IOError as e:
             printdbg("[warning] error reading config file: %s" % e)
 
