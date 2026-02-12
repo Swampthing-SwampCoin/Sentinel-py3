@@ -22,7 +22,7 @@ import urllib.parse as urlparse
 from governance_class import GovernanceClass
 
 db = config.db
-db.connect()
+db.connect(reuse_if_open=True)
 
 
 # TODO: lookup table?

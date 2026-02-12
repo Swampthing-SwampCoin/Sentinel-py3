@@ -73,6 +73,12 @@ def get_db_conn():
 
     if driver == peewee.SqliteDatabase:
         db_conn = {}
+        # resolve relative SQLite paths to project root and ensure directory exists
+        if not os.path.isabs(db_name):
+            db_name = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', db_name))
+        db_dir = os.path.dirname(db_name)
+        if db_dir and not os.path.exists(db_dir):
+            os.makedirs(db_dir)
 
     db = driver(db_name, **db_conn)
 
