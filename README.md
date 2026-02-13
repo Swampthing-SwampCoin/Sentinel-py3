@@ -19,7 +19,7 @@ Make sure Python version 3.11.x or above is installed:
 Update system packages and ensure virtualenv is installed:
 
     $ sudo apt-get update
-    $ sudo apt-get -y install python3-venv
+    $ sudo apt-get -y install python3-venv git
     $ sudo apt install virtualenv
 
 Make sure the local Swamp daemon running is at least version 2 (2000003)
