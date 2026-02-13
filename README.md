@@ -30,7 +30,7 @@ Make sure the local Swamp daemon running is at least version 2 (2000003)
 
 Clone the Sentinel repo and install Python dependencies.
 
-    git clone https://github.com/Cryptominer937/Sentinel-py3.git && cd Sentinel-py3
+    git clone https://github.com/Swampthing-SwampCoin/Sentinel-py3.git && cd Sentinel-py3
     virtualenv ./venv
     ./venv/bin/pip install -r requirements.txt
 
