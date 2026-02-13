@@ -1,12 +1,12 @@
-# Swamp Sentinel ------- Tested On Debian 12 -------
+# Swamp Sentinel 
 
 An all-powerful toolset for Swamp.
 
 Sentinel is an autonomous agent for persisting, processing and automating Swamp V2 governance objects and tasks.
 
-Sentinel is implemented as a Python application that binds to a local version 2 swampd instance on each Swamp V1.1 Masternode.
+Sentinel is implemented as a Python application that binds to a local version 2 swampd instance on each Swamp V2 Masternode.
 
-This guide covers installing Sentinel onto an existing 1.1 Masternode in Ubuntu Linux.
+This guide covers installing Sentinel onto an existing V2 Masternode dor Debian 12+ and Ubuntu 13.03+ as Python 3.11+ is required.
 
 ## Installation
 
