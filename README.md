@@ -1,65 +1,111 @@
-# Swamp Sentinel 
+## 🛡️ Swamp Sentinel
 
-An all-powerful toolset for Swamp.
+**The autonomous heartbeat of Swamp V2 Masternodes.**
 
-Sentinel is an autonomous agent for persisting, processing and automating Swamp V2 governance objects and tasks.
+Sentinel is an autonomous agent designed to persist, process, and automate Swamp V2 governance objects and tasks. It runs as a Python application, binding locally to a `swampd` instance on each Masternode.
 
-Sentinel is implemented as a Python application that binds to a local version 2 swampd instance on each Swamp V2 Masternode.
+---
 
-This guide covers installing Sentinel onto an existing V2 Masternode for Debian 12+ and Ubuntu 23.04+ as Python 3.11+ is required.
+## 📋 Prerequisites
 
-## Installation
+Before installing, ensure your environment meets the following requirements:
 
-### 1. Install Prerequisites
+* **OS:** Debian 12+, Ubuntu 23.04+, or CentOS/RHEL 9+
+* **Python:** Version 3.11.x or higher
+* **Swamp Daemon:** `swampd` version 2 (2000003) or higher
 
-Make sure Python version 3.11.x or above is installed:
+### Verify Requirements
+```bash
+# Check Python version
+python3 --version
 
-    python3 --version
+# Check Swamp version
+swamp-cli getinfo | grep version
+```
 
-Update system packages and ensure virtualenv is installed:
+---
 
-    sudo apt-get update
-    sudo apt-get -y install python3-venv git
-    sudo apt install virtualenv
+## 🚀 Installation & Setup
 
-Make sure the local Swamp daemon running is at least version 2 (2000003)
+Choose the section that matches your environment. Ensure you are logged in as the user intended to run the Masternode (e.g., `root` or a dedicated service user).
 
-    swamp-cli getinfo | grep version
+### Option A: Debian / Ubuntu (with sudo)
+*Recommended for most standard VPS setups.*
+```bash
+sudo apt-get update
+sudo apt-get -y install python3-venv git virtualenv
+git clone https://github.com/Swampthing-SwampCoin/Sentinel-py3.git ~/Sentinel-py3
+cd ~/Sentinel-py3
+virtualenv ./venv
+./venv/bin/pip install -r requirements.txt
+```
 
-### 2. Install Sentinel
+### Option B: Debian / Ubuntu (Root)
+```bash
+apt-get update
+apt-get -y install python3-venv git virtualenv
+git clone https://github.com/Swampthing-SwampCoin/Sentinel-py3.git ~/Sentinel-py3
+cd ~/Sentinel-py3
+virtualenv ./venv
+./venv/bin/pip install -r requirements.txt
+```
 
-Clone the Sentinel repo and install Python dependencies.
+### Option C: CentOS / RHEL / AlmaLinux
+*Tested on Enterprise Linux 9+ (uses `dnf`).*
+```bash
+sudo dnf install -y python3 git
+git clone https://github.com/Swampthing-SwampCoin/Sentinel-py3.git ~/Sentinel-py3
+cd ~/Sentinel-py3
+python3 -m venv venv
+./venv/bin/pip install --upgrade pip
+./venv/bin/pip install -r requirements.txt
+```
 
-    git clone https://github.com/Swampthing-SwampCoin/Sentinel-py3.git && cd Sentinel-py3
-    virtualenv ./venv
-    ./venv/bin/pip install -r requirements.txt
+---
 
-### 3. Set up Cron
+## ⏰ Automation (Cron Setup)
 
-Set up a crontab entry to call Sentinel every minute:
+Sentinel must run every minute to maintain the Masternode state. We use the `~/` pathing to ensure it works for both root and standard users.
 
-    crontab -e
+1. Open the cron editor:
+   ```bash
+   crontab -e
+   ```
+2. Append the following line to the file (ensure there is a newline at the end):
+   ```cron
+   * * * * * cd ~/Sentinel-py3 && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1
+   ```
+   > **Pro Tip:** If your specific cron environment doesn't resolve `~/`, replace it with the full path (e.g., `/home/username/Sentinel-py3` or `/root/Sentinel-py3`).
 
-In the crontab editor, add the lines below, replacing '~/Sentinel-py3' to the path where you cloned sentinel to:
+---
 
-    * * * * * cd ~/Sentinel-py3 && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1
+## 🧪 Verification
 
-### 4. Test the Configuration
+After installation, verify that Sentinel can communicate with your local `swampd` instance:
 
-Test the config by runnings all tests from the sentinel folder you cloned into
+| Step | Command |
+| :--- | :--- |
+| **1. Run Tests** | `./venv/bin/py.test ./test` |
+| **2. Manual Debug** | `SENTINEL_DEBUG=1 ./venv/bin/python bin/sentinel.py` |
 
-    ./venv/bin/py.test ./test
+**Expected Result:** The manual check should output the current status of the Swamp network and confirm it is synced with your local daemon.
 
-With all tests passing and crontab setup, Sentinel will stay in sync with swampd and the installation is complete
+---
 
-## Configuration
+## ⚙️ Configuration
 
-An alternative (non-default) path to the `swamp.conf` file can be specified in `sentinel.conf`:
+By default, Sentinel looks for `swamp.conf` in the standard data directory. If you use a non-default path, edit `sentinel.conf`:
 
-    swamp_conf=/path/to/swamp.conf
+```ini
+# sentinel.conf
+swamp_conf=/path/to/your/custom/swamp.conf
+```
 
-## Troubleshooting
+---
 
-To view debug output, set the `SENTINEL_DEBUG` environment variable to anything non-zero, then run the script manually:
+## 🛠️ Troubleshooting
 
-    SENTINEL_DEBUG=1 ./venv/bin/python bin/sentinel.py
+If you encounter issues, run the script manually with the debug flag enabled to see the raw output:
+
+```bash
+SENTINEL_DEBUG=1 ./venv/bin/python bin/sentinel.py
